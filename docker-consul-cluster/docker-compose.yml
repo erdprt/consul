@@ -1,0 +1,26 @@
+version: '3.3'
+
+services:
+
+  dev-consul:
+    image: consul:$CONSUL_VERSION
+    environment:
+      - CONSUL_BIND_INTERFACE=$CONSUL_BIND_INTERFACE
+    ports: 
+      - "8500:8500"
+
+  join-consul-1:
+    image: consul:$CONSUL_VERSION
+    environment:
+      - CONSUL_BIND_INTERFACE=$CONSUL_BIND_INTERFACE
+    links:
+      - dev-consul:dev-consul
+    command: agent -dev -join=dev-consul
+
+  join-consul-2:
+    image: consul:$CONSUL_VERSION
+    environment:
+      - CONSUL_BIND_INTERFACE=$CONSUL_BIND_INTERFACE
+    links:
+      - dev-consul:dev-consul
+    command: agent -dev -join=dev-consul
